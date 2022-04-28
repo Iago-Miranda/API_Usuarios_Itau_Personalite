@@ -3,6 +3,7 @@ using Aplicacao.Interfaces;
 using Dominio.Interfaces;
 using Dominio.Interfaces.Genericos;
 using Dominio.Interfaces.InterfacesDeServicos;
+using Dominio.Servicos;
 using Infraestrutura.Configuracoes;
 using Infraestrutura.Repositorio;
 using Infraestrutura.Repositorio.Genericos;
@@ -49,7 +50,7 @@ namespace WebAPIAutenticacao
             services.AddSingleton<IUsuario, RepositorioUsuario>();
 
             //Adicao dos Singletons com Interfaces e Servicos
-            services.AddSingleton<IServicoAutentica, IServicoAutentica>();
+            services.AddSingleton<IServicoAutentica, ServicoAutentica>();
 
             //Adicao dos Singletons com Interfaces e Servicos
             services.AddSingleton<IAplicacaoAutentica, AplicacaoAutentica>();

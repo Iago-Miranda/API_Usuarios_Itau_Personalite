@@ -24,7 +24,7 @@ namespace WebAPIAutenticacao.Controllers
 
         [AllowAnonymous]
         [Produces("application/json")]
-        [HttpPost("/CriarToken")]
+        [HttpPost("CriarToken")]
         public async Task<IActionResult> CriarToken([FromBody] Login login)
         {
             if (!ModelState.IsValid)
@@ -50,6 +50,7 @@ namespace WebAPIAutenticacao.Controllers
                                                     .AddSecurityKey(JwtSecurityKey.Create("Secret_Key-12345678"))
                                                     .AddSubject("Itau Personalite - API Usuario")
                                                     .AddIssuer("ItauPersonalite.Securiry.Bearer")
+                                                    .AddAudience("Teste.Securiry.Bearer")
                                                     .AddClaim("EmailUsuario", login.Email)
                                                     .AddExpiry(30)
                                                     .Builder();
