@@ -1,5 +1,6 @@
 ﻿using Aplicacao.Interfaces;
 using Entidades.Entidades;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace WebAPIAutenticacao.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class UsuarioController : ControllerBase
     {

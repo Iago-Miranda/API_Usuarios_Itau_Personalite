@@ -25,6 +25,13 @@ namespace Infraestrutura.Migrations
             //    table: "Usuarios",
             //    columns: new[] { "Id", "Email", "Nome", "Senha" },
             //    values: new object[] { 1, "Administrador@itau.personalite.com.br", "Administrador", "JRSznD]8P<*R" });
+
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_Usuarios_Email",
+            //    table: "Usuarios",
+            //    column: "Email",
+            //    unique: true,
+            //    filter: "[Email] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

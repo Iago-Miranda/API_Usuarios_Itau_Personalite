@@ -39,6 +39,10 @@ namespace Infraestrutura.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
+
                     b.ToTable("Usuarios");
 
                     b.HasData(

@@ -111,6 +111,7 @@ namespace WebAPIAutenticacao
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

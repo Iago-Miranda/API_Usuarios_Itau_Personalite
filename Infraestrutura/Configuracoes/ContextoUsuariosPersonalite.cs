@@ -37,6 +37,10 @@ namespace Infraestrutura.Configuracoes
                 }
             );
 
+            modelBuilder.Entity<Usuario>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
             base.OnModelCreating(modelBuilder);
         }
 
