@@ -34,10 +34,8 @@ namespace Infraestrutura.Repositorio.Genericos
 
         public async Task<List<T>> ListarTodos()
         {
-            using (var banco = new ContextoUsuariosPersonalite(_OptionsBuilder))
-            {
-                return await banco.Set<T>().AsNoTracking().ToListAsync();
-            };
+            using var banco = new ContextoUsuariosPersonalite(_OptionsBuilder);
+            return await banco.Set<T>().AsNoTracking().ToListAsync();
         }
 
         #region Disposed https://docs.microsoft.com/pt-br/dotnet/standard/garbage-collection/implementing-dispose

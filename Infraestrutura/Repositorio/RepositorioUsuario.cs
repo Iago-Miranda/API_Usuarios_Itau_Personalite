@@ -25,5 +25,12 @@ namespace Infraestrutura.Repositorio
             using var banco = new ContextoUsuariosPersonalite(_OptionsBuilder);
             return await banco.Usuarios.AnyAsync(exUsuario);
         }
+
+        public async Task<string> RecuperaIdPorEmail(string email)
+        {
+            using var banco = new ContextoUsuariosPersonalite(_OptionsBuilder);
+            var resultado = await banco.Usuarios.AsNoTracking().FirstOrDefaultAsync(usuario => usuario.Email == email);
+            return resultado.Id.ToString();
+        }
     }
 }

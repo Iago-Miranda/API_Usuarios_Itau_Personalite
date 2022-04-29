@@ -21,5 +21,9 @@ namespace Dominio.Servicos
             return await _IUsuario.VerificaUsuarioExiste(usuario => usuario.Email == emailUsuario 
                                                                         && usuario.Senha == senhaUsuario);
         }
+        public async Task<string> RecuperaIdPorEmail(string email)
+        {
+            return await _IUsuario.RecuperaIdPorEmail(email);
+        }
     }
 }

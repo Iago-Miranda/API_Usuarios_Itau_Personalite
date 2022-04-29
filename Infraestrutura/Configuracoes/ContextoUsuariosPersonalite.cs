@@ -30,7 +30,7 @@ namespace Infraestrutura.Configuracoes
             modelBuilder.Entity<Usuario>().HasData(
                 new Usuario
                 {
-                    Id = 1,
+                    Id = Guid.NewGuid(),
                     Nome = "Administrador",
                     Email = "Administrador@itau.personalite.com.br",
                     Senha = "JRSznD]8P<*R"

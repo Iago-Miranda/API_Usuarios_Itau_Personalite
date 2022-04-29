@@ -33,7 +33,7 @@ namespace WebAPIAutenticacao.Controllers
             {
                 await _IAplicacaoUsuario.Adicionar(usuario);
 
-                if(usuario.Id == 0)
+                if(usuario.Id == Guid.Empty)
                 {
                     return BadRequest();
                 }

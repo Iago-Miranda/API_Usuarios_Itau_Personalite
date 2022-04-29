@@ -11,5 +11,7 @@ namespace Dominio.Interfaces
     public interface IUsuario : IGenericos<Usuario>
     {
         public Task<bool> VerificaUsuarioExiste(Expression<Func<Usuario, bool>> exUsuario);
+
+        public Task<string> RecuperaIdPorEmail(string email);
     }
 }

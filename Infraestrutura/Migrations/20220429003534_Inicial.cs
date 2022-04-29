@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infraestrutura.Migrations
 {
@@ -10,8 +11,7 @@ namespace Infraestrutura.Migrations
             //    name: "Usuarios",
             //    columns: table => new
             //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
+            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
             //        Nome = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
             //        Email = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
             //        Senha = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true)
@@ -24,7 +24,7 @@ namespace Infraestrutura.Migrations
             //migrationBuilder.InsertData(
             //    table: "Usuarios",
             //    columns: new[] { "Id", "Email", "Nome", "Senha" },
-            //    values: new object[] { 1, "Administrador@itau.personalite.com.br", "Administrador", "JRSznD]8P<*R" });
+            //    values: new object[] { new Guid("a854755d-578b-4059-ad11-93d0674687db"), "Administrador@itau.personalite.com.br", "Administrador", "JRSznD]8P<*R" });
 
             //migrationBuilder.CreateIndex(
             //    name: "IX_Usuarios_Email",

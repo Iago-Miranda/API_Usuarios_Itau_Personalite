@@ -46,12 +46,15 @@ namespace WebAPIAutenticacao.Controllers
                 }
                 else
                 {
+                    var idUsuario = await _IAplicacaoAutentica.RecuperaIdPorEmail(login.Email);
+
                     var tokenParaRetornar = new TokenJWTBuilder()
                                                     .AddSecurityKey(JwtSecurityKey.Create("Secret_Key-12345678"))
                                                     .AddSubject("Itau Personalite - API Usuario")
                                                     .AddIssuer("ItauPersonalite.Securiry.Bearer")
                                                     .AddAudience("Teste.Securiry.Bearer")
                                                     .AddClaim("EmailUsuario", login.Email)
+                                                    .AddClaim("idUsuario", idUsuario)
                                                     .AddExpiry(30)
                                                     .Builder();
                     return Ok(tokenParaRetornar);
