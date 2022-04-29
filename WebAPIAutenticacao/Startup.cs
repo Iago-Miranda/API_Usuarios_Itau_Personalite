@@ -4,6 +4,7 @@ using Dominio.Interfaces;
 using Dominio.Interfaces.Genericos;
 using Dominio.Interfaces.InterfacesDeServicos;
 using Dominio.Servicos;
+using FluentValidation.AspNetCore;
 using Infraestrutura.Configuracoes;
 using Infraestrutura.Repositorio;
 using Infraestrutura.Repositorio.Genericos;
@@ -56,9 +57,12 @@ namespace WebAPIAutenticacao
             services.AddSingleton<IAplicacaoAutentica, AplicacaoAutentica>();
             services.AddSingleton<IAplicacaoUsuario, AplicacaoUsuario>();
 
+            //Adicao dos validadores
+            services.AddControllers()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+
             ConfigureAuthentication(services);
 
-            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Exame Asp.Net core + SQL server -> API de usuário", Version = "v1" });

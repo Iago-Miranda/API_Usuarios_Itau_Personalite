@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAPIAutenticacao.AuthToken;
 using WebAPIAutenticacao.Models;
+using WebAPIAutenticacao.Validadores;
 
 namespace WebAPIAutenticacao.Controllers
 {
@@ -33,9 +34,13 @@ namespace WebAPIAutenticacao.Controllers
             }
             else
             {
-                if (string.IsNullOrWhiteSpace(login.Email) || string.IsNullOrWhiteSpace(login.Senha))
+                ValidadorLogin validador = new ValidadorLogin();
+
+                var resultadoValidacao = validador.Validate(login);
+
+                if (!resultadoValidacao.IsValid)
                 {
-                    return Unauthorized();
+                    return Unauthorized(resultadoValidacao.Errors);
                 }
 
                 var resultadoAutenticacao = await _IAplicacaoAutentica.ValidaCredenciais(login.Email, login.Senha);
