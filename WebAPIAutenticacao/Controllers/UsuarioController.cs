@@ -1,4 +1,5 @@
 ﻿using Aplicacao.Interfaces;
+using Aplicacao.Models;
 using Entidades.Entidades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPIAutenticacao.Models;
 
 namespace WebAPIAutenticacao.Controllers
 {
@@ -20,6 +22,34 @@ namespace WebAPIAutenticacao.Controllers
         {
             _IAplicacaoUsuario = IAplicacaoUsuario;
         }
+
+        [Produces("application/json")]
+        [HttpGet]
+        public async Task<IActionResult> ListaDeUsuarios()
+        {
+            List<UsuarioUI> listusuarioRecuperados = null;
+
+            listusuarioRecuperados = await _IAplicacaoUsuario.ListaDeUsuariosUI();
+
+            if (listusuarioRecuperados is null)
+                return NotFound();
+            else
+                return Ok(listusuarioRecuperados);
+        }
+
+        [Produces("application/json")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> RecuperaUsuarioPorId([FromRoute] Guid id)
+        {
+            UsuarioUI usuarioRecuperado = null;
+
+            usuarioRecuperado = await _IAplicacaoUsuario.BuscarUsuarioUIPorId(id);
+
+            if (usuarioRecuperado is null)
+                return NotFound();
+            else
+                return Ok(usuarioRecuperado);
+        }        
 
         [Produces("application/json")]
         [HttpPost]

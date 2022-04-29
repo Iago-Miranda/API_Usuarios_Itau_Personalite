@@ -26,7 +26,7 @@ namespace Infraestrutura.Repositorio.Genericos
             await banco.SaveChangesAsync();
         }
 
-        public async Task<T> BuscarPorId(int Id)
+        public async Task<T> BuscarPorId(Guid Id)
         {
             using var banco = new ContextoUsuariosPersonalite(_OptionsBuilder);
             return await banco.Set<T>().FindAsync(Id);
