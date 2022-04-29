@@ -16,15 +16,6 @@ namespace Infraestrutura.Configuracoes
 
         public DbSet<Usuario> Usuarios { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(ObterStringConexao());
-                base.OnConfiguring(optionsBuilder);
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Usuario>().HasData(
@@ -42,12 +33,6 @@ namespace Infraestrutura.Configuracoes
                 .IsUnique();
 
             base.OnModelCreating(modelBuilder);
-        }
-
-        public string ObterStringConexao()
-        {
-            string strcon = "Server=localhost;Database=Usuarios_Personalite;Trusted_Connection=True;";
-            return strcon;
         }
     }
 }

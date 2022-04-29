@@ -47,15 +47,15 @@ namespace WebAPIAutenticacao
             });
 
             //Adicao dos Singletons com Interfaces e Repositorios
-            services.AddSingleton(typeof(IGenericos<>), typeof(RepositorioGenerico<>));
-            services.AddSingleton<IUsuario, RepositorioUsuario>();
+            services.AddTransient(typeof(IGenericos<>), typeof(RepositorioGenerico<>));
+            services.AddTransient<IUsuario, RepositorioUsuario>();
 
             //Adicao dos Singletons com Interfaces e Servicos
-            services.AddSingleton<IServicoAutentica, ServicoAutentica>();
+            services.AddTransient<IServicoAutentica, ServicoAutentica>();
 
             //Adicao dos Singletons com Interfaces e Servicos
-            services.AddSingleton<IAplicacaoAutentica, AplicacaoAutentica>();
-            services.AddSingleton<IAplicacaoUsuario, AplicacaoUsuario>();
+            services.AddTransient<IAplicacaoAutentica, AplicacaoAutentica>();
+            services.AddTransient<IAplicacaoUsuario, AplicacaoUsuario>();
 
             //Adicao dos validadores
             services.AddControllers()

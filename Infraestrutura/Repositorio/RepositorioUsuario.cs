@@ -13,23 +13,21 @@ namespace Infraestrutura.Repositorio
 {
     public class RepositorioUsuario : RepositorioGenerico<Usuario>, IUsuario
     {
-        private readonly DbContextOptions<ContextoUsuariosPersonalite> _OptionsBuilder;
+        private readonly ContextoUsuariosPersonalite _banco;
 
-        public RepositorioUsuario()
+        public RepositorioUsuario(ContextoUsuariosPersonalite banco) : base(banco)
         {
-            _OptionsBuilder = new DbContextOptions<ContextoUsuariosPersonalite>();
+            _banco = banco;
         }
 
         public async Task<bool> VerificaUsuarioExiste(Expression<Func<Usuario, bool>> exUsuario)
         {
-            using var banco = new ContextoUsuariosPersonalite(_OptionsBuilder);
-            return await banco.Usuarios.AnyAsync(exUsuario);
+            return await _banco.Usuarios.AnyAsync(exUsuario);
         }
 
         public async Task<string> RecuperaIdPorEmail(string email)
         {
-            using var banco = new ContextoUsuariosPersonalite(_OptionsBuilder);
-            var resultado = await banco.Usuarios.AsNoTracking().FirstOrDefaultAsync(usuario => usuario.Email == email);
+            var resultado = await _banco.Usuarios.AsNoTracking().FirstOrDefaultAsync(usuario => usuario.Email == email);
             return resultado.Id.ToString();
         }
     }

@@ -12,30 +12,27 @@ namespace Infraestrutura.Repositorio.Genericos
 {
     public class RepositorioGenerico<T> : IGenericos<T>, IDisposable where T : class
     {
-        private readonly DbContextOptions<ContextoUsuariosPersonalite> _OptionsBuilder; 
+        private readonly ContextoUsuariosPersonalite _banco; 
 
-        public RepositorioGenerico()
+        public RepositorioGenerico(ContextoUsuariosPersonalite banco)
         {
-            _OptionsBuilder = new DbContextOptions<ContextoUsuariosPersonalite>();
+            _banco = banco;
         }          
 
         public async Task Adicionar(T Objeto)
         {
-            using var banco = new ContextoUsuariosPersonalite(_OptionsBuilder);
-            await banco.Set<T>().AddAsync(Objeto);
-            await banco.SaveChangesAsync();
+            await _banco.Set<T>().AddAsync(Objeto);
+            await _banco.SaveChangesAsync();
         }
 
         public async Task<T> BuscarPorId(Guid Id)
         {
-            using var banco = new ContextoUsuariosPersonalite(_OptionsBuilder);
-            return await banco.Set<T>().FindAsync(Id);
+            return await _banco.Set<T>().FindAsync(Id);
         }              
 
         public async Task<List<T>> ListarTodos()
         {
-            using var banco = new ContextoUsuariosPersonalite(_OptionsBuilder);
-            return await banco.Set<T>().AsNoTracking().ToListAsync();
+            return await _banco.Set<T>().AsNoTracking().ToListAsync();
         }
 
         #region Disposed https://docs.microsoft.com/pt-br/dotnet/standard/garbage-collection/implementing-dispose
@@ -43,7 +40,6 @@ namespace Infraestrutura.Repositorio.Genericos
         bool disposed = false;
         // Instantiate a SafeHandle instance.
         readonly SafeHandle handle = new SafeFileHandle(IntPtr.Zero, true);
-
 
         // Public implementation of Dispose pattern callable by consumers.
         public void Dispose()
