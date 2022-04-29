@@ -14,7 +14,7 @@ using WebAPIAutenticacao.Models;
 namespace WebAPIAutenticacao.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class UsuarioController : ControllerBase
     {
