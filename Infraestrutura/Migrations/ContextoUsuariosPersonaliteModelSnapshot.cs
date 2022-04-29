@@ -33,7 +33,7 @@ namespace Infraestrutura.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("Senha")
+                    b.Property<string>("SenhaArmazenada")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -48,10 +48,10 @@ namespace Infraestrutura.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a854755d-578b-4059-ad11-93d0674687db"),
+                            Id = new Guid("7ed71c74-eaed-4182-9231-d0bffd15273c"),
                             Email = "Administrador@itau.personalite.com.br",
                             Nome = "Administrador",
-                            Senha = "JRSznD]8P<*R"
+                            SenhaArmazenada = "dwsuQ7kvkHKM8AzWf8tnabJiS5U1h78szHGWI7d7QEM="
                         });
                 });
 #pragma warning restore 612, 618

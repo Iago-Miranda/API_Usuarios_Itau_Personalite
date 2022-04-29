@@ -10,7 +10,6 @@ namespace Infraestrutura.Configuracoes
     {
         public ContextoUsuariosPersonalite(DbContextOptions<ContextoUsuariosPersonalite> opcoes) : base(opcoes)
         {
-            this.Database.EnsureCreated();
             this.Database.Migrate();
         }
 
