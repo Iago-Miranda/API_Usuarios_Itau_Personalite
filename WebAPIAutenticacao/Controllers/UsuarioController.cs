@@ -57,38 +57,34 @@ namespace WebAPIAutenticacao.Controllers
         public async Task<IActionResult> AdicionaUsuario([FromBody] Usuario usuario)
         {
             if (!ModelState.IsValid)
+                return BadRequest();
+
+            ValidadorUsuario validador = new ValidadorUsuario();
+
+            var resultadoValidacao = validador.Validate(usuario);
+
+            if(!resultadoValidacao.IsValid)
             {
-                return Unauthorized();
+                return BadRequest(resultadoValidacao.Errors);
+            }
+
+            var emailExistente = await _IAplicacaoUsuario.VerificaUsuarioExiste(u => u.Email == usuario.Email);
+
+            if (emailExistente)
+            {
+                return Conflict();
+            }
+
+            await _IAplicacaoUsuario.Adicionar(usuario);
+
+            if(usuario.Id == Guid.Empty)
+            {
+                return BadRequest();
             }
             else
             {
-                ValidadorUsuario validador = new ValidadorUsuario();
-
-                var resultadoValidacao = validador.Validate(usuario);
-
-                if(!resultadoValidacao.IsValid)
-                {
-                    return BadRequest(resultadoValidacao.Errors);
-                }
-
-                var emailExistente = await _IAplicacaoUsuario.VerificaUsuarioExiste(u => u.Email == usuario.Email);
-
-                if (emailExistente)
-                {
-                    return Conflict();
-                }
-
-                await _IAplicacaoUsuario.Adicionar(usuario);
-
-                if(usuario.Id == Guid.Empty)
-                {
-                    return BadRequest();
-                }
-                else
-                {
-                    return Ok(usuario);
-                }
-            }            
+                return Ok(usuario);
+            }
         }
     }
 }

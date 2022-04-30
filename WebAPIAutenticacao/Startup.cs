@@ -58,8 +58,7 @@ namespace WebAPIAutenticacao
             services.AddTransient<IAplicacaoUsuario, AplicacaoUsuario>();
 
             //Adicao dos validadores
-            services.AddControllers()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+            services.AddControllers();
 
             ConfigureAuthentication(services);
 
@@ -108,7 +107,7 @@ namespace WebAPIAutenticacao
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Exame Asp.Net core + SQL server -> API de usuário v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Exame Asp.Net core + SQL server -> API de clientes v1"));
             }
 
             app.UseHttpsRedirection();
