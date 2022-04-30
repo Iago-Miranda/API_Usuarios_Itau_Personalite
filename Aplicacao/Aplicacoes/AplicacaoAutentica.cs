@@ -18,5 +18,10 @@ namespace Aplicacao.Aplicacoes
         {
             return await _IServicoAutentica.ValidaCredenciais(emailUsuario,senhaUsuario);
         }
+
+        public async Task<string> RecuperaIdPorEmail(string email)
+        {
+            return await _IServicoAutentica.RecuperaIdPorEmail(email);
+        }
     }
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAPIAutenticacao.AuthToken;
 using WebAPIAutenticacao.Models;
+using WebAPIAutenticacao.Validadores;
 
 namespace WebAPIAutenticacao.Controllers
 {
@@ -24,7 +25,7 @@ namespace WebAPIAutenticacao.Controllers
 
         [AllowAnonymous]
         [Produces("application/json")]
-        [HttpPost("/CriarToken")]
+        [HttpPost("CriarToken")]
         public async Task<IActionResult> CriarToken([FromBody] Login login)
         {
             if (!ModelState.IsValid)
@@ -33,9 +34,13 @@ namespace WebAPIAutenticacao.Controllers
             }
             else
             {
-                if (string.IsNullOrWhiteSpace(login.Email) || string.IsNullOrWhiteSpace(login.Senha))
+                ValidadorLogin validador = new ValidadorLogin();
+
+                var resultadoValidacao = validador.Validate(login);
+
+                if (!resultadoValidacao.IsValid)
                 {
-                    return Unauthorized();
+                    return Unauthorized(resultadoValidacao.Errors);
                 }
 
                 var resultadoAutenticacao = await _IAplicacaoAutentica.ValidaCredenciais(login.Email, login.Senha);
@@ -46,11 +51,15 @@ namespace WebAPIAutenticacao.Controllers
                 }
                 else
                 {
+                    var idUsuario = await _IAplicacaoAutentica.RecuperaIdPorEmail(login.Email);
+
                     var tokenParaRetornar = new TokenJWTBuilder()
                                                     .AddSecurityKey(JwtSecurityKey.Create("Secret_Key-12345678"))
                                                     .AddSubject("Itau Personalite - API Usuario")
                                                     .AddIssuer("ItauPersonalite.Securiry.Bearer")
+                                                    .AddAudience("Teste.Securiry.Bearer")
                                                     .AddClaim("EmailUsuario", login.Email)
+                                                    .AddClaim("idUsuario", idUsuario)
                                                     .AddExpiry(30)
                                                     .Builder();
                     return Ok(tokenParaRetornar);

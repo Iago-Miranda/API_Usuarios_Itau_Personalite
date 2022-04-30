@@ -2,6 +2,7 @@
 using Dominio.Interfaces.InterfacesDeServicos;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,8 +19,14 @@ namespace Dominio.Servicos
 
         public async Task<bool> ValidaCredenciais(string emailUsuario, string senhaUsuario)
         {
-            return await _IUsuario.VerificaUsuarioExiste(usuario => usuario.Email == emailUsuario 
+            var listaUsuarios = await _IUsuario.ListarTodos();
+
+            return listaUsuarios.Any(usuario => usuario.Email == emailUsuario 
                                                                         && usuario.Senha == senhaUsuario);
+        }
+        public async Task<string> RecuperaIdPorEmail(string email)
+        {
+            return await _IUsuario.RecuperaIdPorEmail(email);
         }
     }
 }

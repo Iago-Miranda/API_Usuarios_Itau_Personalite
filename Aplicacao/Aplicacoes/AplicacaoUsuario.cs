@@ -1,4 +1,6 @@
 ﻿using Aplicacao.Interfaces;
+using Aplicacao.Models;
+using AutoMapper;
 using Dominio.Interfaces;
 using Entidades.Entidades;
 using System;
@@ -23,9 +25,31 @@ namespace Aplicacao.Aplicacoes
             await _IUsuario.Adicionar(Objeto);
         }
 
-        public async Task<Usuario> BuscarPorId(int Id)
+        public async Task<Usuario> BuscarPorId(Guid Id)
         {
             return await _IUsuario.BuscarPorId(Id);
+        }
+
+        public async Task<UsuarioUI> BuscarUsuarioUIPorId(Guid id)
+        {
+            var usuarioDB = await _IUsuario.BuscarPorId(id);
+
+            var mappingConfig = new MapperConfiguration(cfg => cfg.CreateMap<Usuario, UsuarioUI>());
+
+            var mapper = new Mapper(mappingConfig);
+
+            return mapper.Map<UsuarioUI>(usuarioDB);
+        }
+
+        public async Task<List<UsuarioUI>> ListaDeUsuariosUI()
+        {
+            var usuariosDB = await _IUsuario.ListarTodos();
+
+            var mappingConfig = new MapperConfiguration(cfg => cfg.CreateMap<Usuario, UsuarioUI>());
+
+            var mapper = new Mapper(mappingConfig);
+
+            return mapper.Map<List<UsuarioUI>>(usuariosDB);
         }
 
         public async Task<List<Usuario>> ListarTodos()
