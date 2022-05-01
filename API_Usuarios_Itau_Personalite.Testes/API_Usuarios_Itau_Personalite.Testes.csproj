@@ -17,7 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Aplicacao\Aplicacao.csproj" />
     <ProjectReference Include="..\Dominio\Dominio.csproj" />
-    <ProjectReference Include="..\Entidades\Entidades.csproj" />
   </ItemGroup>
 
 </Project>
