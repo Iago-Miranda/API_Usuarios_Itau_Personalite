@@ -1,8 +1,4 @@
-﻿using Entidades.Entidades;
-using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FluentValidation;
 using WebAPIAutenticacao.Models;
 
 namespace WebAPIAutenticacao.Validadores

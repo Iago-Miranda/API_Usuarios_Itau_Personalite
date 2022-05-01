@@ -1,10 +1,8 @@
 ﻿using Aplicacao.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WebAPIAutenticacao.AuthToken;
 using WebAPIAutenticacao.Models;
@@ -17,10 +15,12 @@ namespace WebAPIAutenticacao.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IAplicacaoAutentica _IAplicacaoAutentica;
+        private readonly IConfiguration _IConfiguration;
 
-        public LoginController(IAplicacaoAutentica IAplicacaoAutentica)
+        public LoginController(IAplicacaoAutentica IAplicacaoAutentica, IConfiguration IConfiguration)
         {
             _IAplicacaoAutentica = IAplicacaoAutentica;
+            _IConfiguration = IConfiguration;
         }
 
         [AllowAnonymous]
@@ -29,42 +29,31 @@ namespace WebAPIAutenticacao.Controllers
         public async Task<IActionResult> CriarToken([FromBody] Login login)
         {
             if (!ModelState.IsValid)
-            {
                 return Unauthorized();
-            }
-            else
-            {
-                ValidadorLogin validador = new ValidadorLogin();
 
-                var resultadoValidacao = validador.Validate(login);
+            ValidadorLogin validador = new ValidadorLogin();
 
-                if (!resultadoValidacao.IsValid)
-                {
-                    return Unauthorized(resultadoValidacao.Errors);
-                }
+            var resultadoValidacao = validador.Validate(login);
 
-                var resultadoAutenticacao = await _IAplicacaoAutentica.ValidaCredenciais(login.Email, login.Senha);
+            if (!resultadoValidacao.IsValid)
+                return Unauthorized(resultadoValidacao.Errors);
 
-                if (!resultadoAutenticacao)
-                {
-                    return Unauthorized();
-                }
-                else
-                {
-                    var idUsuario = await _IAplicacaoAutentica.RecuperaIdPorEmail(login.Email);
+            var resultadoAutenticacao = await _IAplicacaoAutentica.ValidaCredenciais(login.Email, login.Senha);
 
-                    var tokenParaRetornar = new TokenJWTBuilder()
-                                                    .AddSecurityKey(JwtSecurityKey.Create("Secret_Key-12345678"))
-                                                    .AddSubject("Itau Personalite - API Usuario")
-                                                    .AddIssuer("ItauPersonalite.Securiry.Bearer")
-                                                    .AddAudience("Teste.Securiry.Bearer")
-                                                    .AddClaim("EmailUsuario", login.Email)
-                                                    .AddClaim("idUsuario", idUsuario)
-                                                    .AddExpiry(30)
-                                                    .Builder();
-                    return Ok(tokenParaRetornar);
-                }
-            }
+            if (!resultadoAutenticacao)
+                return Unauthorized();
+
+            var idUsuario = await _IAplicacaoAutentica.RecuperaIdPorEmail(login.Email);
+
+            var tokenParaRetornar = new TokenJwtBuilder()
+                                            .AddSecurityKey(JwtSecurityKey.Create(_IConfiguration.GetSection("AutenticacaoConfig:TokenSecret").Value))
+                                            .AddSubject(_IConfiguration.GetSection("AutenticacaoConfig:TokenSubject").Value)
+                                            .AddIssuer(_IConfiguration.GetSection("AutenticacaoConfig:TokenIssuer").Value)
+                                            .AddClaim("EmailUsuario", login.Email)
+                                            .AddClaim("idUsuario", idUsuario)
+                                            .AddExpiry(Convert.ToInt16(_IConfiguration.GetSection("AutenticacaoConfig:TokenShelfLife_minutes").Value))
+                                            .Builder();
+            return Ok(tokenParaRetornar);
         }
     }
 }

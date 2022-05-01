@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace WebAPIAutenticacao.Models
+﻿namespace WebAPIAutenticacao.Models
 {
     public class Login
     {

@@ -1,5 +1,4 @@
 ﻿using Aplicacao.Interfaces;
-using Dominio.Interfaces;
 using Dominio.Interfaces.InterfacesDeServicos;
 using System.Threading.Tasks;
 

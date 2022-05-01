@@ -6,7 +6,6 @@ using Entidades.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Aplicacao.Aplicacoes
@@ -23,11 +22,6 @@ namespace Aplicacao.Aplicacoes
         public async Task Adicionar(Usuario Objeto)
         {
             await _IUsuario.Adicionar(Objeto);
-        }
-
-        public async Task<Usuario> BuscarPorId(Guid Id)
-        {
-            return await _IUsuario.BuscarPorId(Id);
         }
 
         public async Task<UsuarioUI> BuscarUsuarioUIPorId(Guid id)
@@ -50,11 +44,6 @@ namespace Aplicacao.Aplicacoes
             var mapper = new Mapper(mappingConfig);
 
             return mapper.Map<List<UsuarioUI>>(usuariosDB);
-        }
-
-        public async Task<List<Usuario>> ListarTodos()
-        {
-            return await _IUsuario.ListarTodos();
         }
 
         public async Task<bool> VerificaUsuarioExiste(Expression<Func<Usuario, bool>> exUsuario)
