@@ -1,15 +1,12 @@
 ﻿using Aplicacao.Interfaces;
 using Aplicacao.Models;
-using Aplicacao.Validadores;
 using Entidades.Entidades;
+using Entidades.Validadores;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using WebAPIAutenticacao.Models;
 
 namespace WebAPIAutenticacao.Controllers
 {
@@ -63,28 +60,20 @@ namespace WebAPIAutenticacao.Controllers
 
             var resultadoValidacao = validador.Validate(usuario);
 
-            if(!resultadoValidacao.IsValid)
-            {
+            if(!resultadoValidacao.IsValid || usuario.Id != Guid.Empty)
                 return BadRequest(resultadoValidacao.Errors);
-            }
 
             var emailExistente = await _IAplicacaoUsuario.VerificaUsuarioExiste(u => u.Email == usuario.Email);
 
             if (emailExistente)
-            {
                 return Conflict();
-            }
 
             await _IAplicacaoUsuario.Adicionar(usuario);
 
             if(usuario.Id == Guid.Empty)
-            {
                 return BadRequest();
-            }
             else
-            {
                 return Ok(usuario);
-            }
         }
     }
 }

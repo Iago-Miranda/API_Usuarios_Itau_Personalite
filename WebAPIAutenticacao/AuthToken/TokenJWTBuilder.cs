@@ -4,57 +4,56 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace WebAPIAutenticacao.AuthToken
 {
-    public class TokenJWTBuilder
+    public class TokenJwtBuilder
     {        
         private SecurityKey securityKey = null;
         private string subject = "";
         private string issuer = "";
         private string audience = "";
-        private Dictionary<string, string> claims = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> claims = new Dictionary<string, string>();
         private int expiryInMinutes = 5;
 
 
-        public TokenJWTBuilder AddSecurityKey(SecurityKey securityKey)
+        public TokenJwtBuilder AddSecurityKey(SecurityKey securityKey)
         {
             this.securityKey = securityKey;
             return this;
         }
 
-        public TokenJWTBuilder AddSubject(string subject)
+        public TokenJwtBuilder AddSubject(string subject)
         {
             this.subject = subject;
             return this;
         }
 
-        public TokenJWTBuilder AddIssuer(string issuer)
+        public TokenJwtBuilder AddIssuer(string issuer)
         {
             this.issuer = issuer;
             return this;
         }
 
-        public TokenJWTBuilder AddAudience(string audience)
+        public TokenJwtBuilder AddAudience(string audience)
         {
             this.audience = audience;
             return this;
         }
 
-        public TokenJWTBuilder AddClaim(string type, string value)
+        public TokenJwtBuilder AddClaim(string type, string value)
         {
             this.claims.Add(type, value);
             return this;
         }
 
-        public TokenJWTBuilder AddClaims(Dictionary<string, string> claims)
+        public TokenJwtBuilder AddClaims(Dictionary<string, string> claims)
         {
             this.claims.Union(claims);
             return this;
         }
 
-        public TokenJWTBuilder AddExpiry(int expiryInMinutes)
+        public TokenJwtBuilder AddExpiry(int expiryInMinutes)
         {
             this.expiryInMinutes = expiryInMinutes;
             return this;
@@ -64,6 +63,7 @@ namespace WebAPIAutenticacao.AuthToken
         private void EnsureArguments()
         {
             if (this.securityKey == null)
+#pragma warning disable S3928 // Parameter names used into ArgumentException constructors should match an existing one 
                 throw new ArgumentNullException("Security Key");
 
             if (string.IsNullOrEmpty(this.subject))
@@ -71,16 +71,14 @@ namespace WebAPIAutenticacao.AuthToken
 
             if (string.IsNullOrEmpty(this.issuer))
                 throw new ArgumentNullException("Issuer");
-
-            if (string.IsNullOrEmpty(this.audience))
-                throw new ArgumentNullException("Audience");
+#pragma warning restore S3928 // Parameter names used into ArgumentException constructors should match an existing one 
         }
 
         public TokenJWT Builder()
         {
             EnsureArguments();
 
-            var claims = new List<Claim>
+            var claimsList = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub,this.subject),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
@@ -89,7 +87,7 @@ namespace WebAPIAutenticacao.AuthToken
             var token = new JwtSecurityToken(
                 issuer: this.issuer,
                 audience: this.audience,
-                claims: claims,
+                claims: claimsList,
                 expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
                 signingCredentials: new SigningCredentials(
                                                     this.securityKey,

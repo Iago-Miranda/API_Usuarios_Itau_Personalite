@@ -1,10 +1,7 @@
 ﻿using Entidades.Entidades;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Aplicacao.Validadores
+namespace Entidades.Validadores
 {
     public class ValidadorUsuario : AbstractValidator<Usuario>
     {
