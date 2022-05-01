@@ -60,8 +60,11 @@ namespace WebAPIAutenticacao.Controllers
 
             var resultadoValidacao = validador.Validate(usuario);
 
-            if(!resultadoValidacao.IsValid || usuario.Id != Guid.Empty)
+            if(!resultadoValidacao.IsValid)
                 return BadRequest(resultadoValidacao.Errors);
+
+            if (usuario.Id != Guid.Empty)
+                return BadRequest("O id não deve ser preenchido para novos cadastros.");
 
             var emailExistente = await _IAplicacaoUsuario.VerificaUsuarioExiste(u => u.Email == usuario.Email);
 

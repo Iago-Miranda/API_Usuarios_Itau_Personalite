@@ -23,10 +23,10 @@ namespace Infraestrutura.Repositorio
             return await _banco.Usuarios.AnyAsync(exUsuario);
         }
 
-        public async Task<string> RecuperaIdPorEmail(string email)
+        public async Task<Usuario> RecuperaUsuarioPorEmail(string email)
         {
             var resultado = await _banco.Usuarios.AsNoTracking().FirstOrDefaultAsync(usuario => usuario.Email == email);
-            return resultado.Id.ToString();
+            return resultado;
         }
     }
 }

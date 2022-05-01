@@ -1,5 +1,6 @@
 ﻿using Dominio.Interfaces;
 using Dominio.Interfaces.InterfacesDeServicos;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,7 +24,9 @@ namespace Dominio.Servicos
         }
         public async Task<string> RecuperaIdPorEmail(string email)
         {
-            return await _IUsuario.RecuperaIdPorEmail(email);
+            var usuarioLocalizado = await _IUsuario.RecuperaUsuarioPorEmail(email);
+
+            return usuarioLocalizado is null ? Guid.Empty.ToString() : usuarioLocalizado.Id.ToString();
         }
     }
 }
