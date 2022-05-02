@@ -10,6 +10,6 @@ namespace Dominio.Interfaces
     {
         public Task<bool> VerificaUsuarioExiste(Expression<Func<Usuario, bool>> exUsuario);
 
-        public Task<string> RecuperaIdPorEmail(string email);
+        public Task<Usuario> RecuperaUsuarioPorEmail(string email);
     }
 }
